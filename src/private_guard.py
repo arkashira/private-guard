@@ -11,20 +11,19 @@ class PrivateGuard:
     def __init__(self, settings: PrivacySettings):
         self.settings = settings
 
-    def verify_ad_free(self) -> bool:
+    def verify_ad_free(self):
         return self.settings.ad_free
 
-    def verify_tracking_free(self) -> bool:
+    def verify_tracking_free(self):
         return self.settings.tracking_free
 
-    def run(self) -> None:
-        if not self.verify_ad_free():
-            raise ValueError("Ad-free functionality not enabled")
-        if not self.verify_tracking_free():
-            raise ValueError("Tracking-free functionality not enabled")
-        print("Private guard: ad-free and tracking-free functionality verified")
+    def run(self):
+        if self.verify_ad_free() and self.verify_tracking_free():
+            return "Private guard: ad-free and tracking-free functionality verified"
+        else:
+            return "Private guard: functionality not verified"
 
-def main() -> None:
+def main():
     parser = argparse.ArgumentParser(description="Private guard tool")
     parser.add_argument("--ad-free", action="store_true", help="Enable ad-free functionality")
     parser.add_argument("--tracking-free", action="store_true", help="Enable tracking-free functionality")
@@ -32,7 +31,7 @@ def main() -> None:
 
     settings = PrivacySettings(ad_free=args.ad_free, tracking_free=args.tracking_free)
     private_guard = PrivateGuard(settings)
-    private_guard.run()
+    print(private_guard.run())
 
 if __name__ == "__main__":
     main()
